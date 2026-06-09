@@ -1,0 +1,42 @@
+{
+  "name": "Paper Arcade",
+  "short_name": "PaperArcade",
+  "description": "Koleksi game offline dengan desain Paper Kit yang menyenangkan. Main Tic Tac Toe, Snake, Number Duel, dan Sambung Kata KBBI!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f8f6",
+  "theme_color": "#111111",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "id",
+  "dir": "ltr",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
