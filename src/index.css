@@ -1,0 +1,272 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.625rem;
+
+    --paper-bg: #f8f8f6;
+    --paper-text: #111111;
+    --paper-card: #ffffff;
+    --paper-border: #111111;
+    --paper-muted: #888888;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+
+    --paper-bg: #1a1a1a;
+    --paper-text: #f0f0f0;
+    --paper-card: #252525;
+    --paper-border: #f0f0f0;
+    --paper-muted: #888888;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--paper-bg);
+    color: var(--paper-text);
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+}
+
+@layer components {
+  .paper-card {
+    background: var(--paper-card);
+    border: 3px solid var(--paper-border);
+    border-radius: 16px;
+    box-shadow: 6px 6px 0 var(--paper-border);
+    transition: all 0.15s ease;
+  }
+
+  .paper-card-hover:hover {
+    box-shadow: 4px 4px 0 var(--paper-border);
+    transform: translate(2px, 2px);
+  }
+
+  .paper-card-active:active {
+    box-shadow: 2px 2px 0 var(--paper-border);
+    transform: translate(4px, 4px);
+  }
+
+  .paper-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.1rem;
+    padding: 0.5rem 1.25rem;
+    background: var(--paper-card);
+    border: 3px solid var(--paper-border);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--paper-border);
+    color: var(--paper-text);
+    cursor: pointer;
+    transition: all 0.12s ease;
+    user-select: none;
+    min-height: 44px;
+  }
+
+  .paper-btn:hover {
+    box-shadow: 2px 2px 0 var(--paper-border);
+    transform: translate(2px, 2px);
+  }
+
+  .paper-btn:active {
+    box-shadow: 1px 1px 0 var(--paper-border);
+    transform: translate(3px, 3px);
+  }
+
+  .paper-btn-primary {
+    background: var(--paper-text);
+    color: var(--paper-bg);
+  }
+
+  .paper-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: 4px 4px 0 var(--paper-border);
+    transform: none;
+  }
+
+  .paper-input {
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 0.625rem 1rem;
+    background: var(--paper-card);
+    border: 3px solid var(--paper-border);
+    border-radius: 12px;
+    color: var(--paper-text);
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.15s ease;
+    min-height: 44px;
+  }
+
+  .paper-input:focus {
+    box-shadow: 4px 4px 0 var(--paper-border);
+  }
+
+  .paper-input::placeholder {
+    color: var(--paper-muted);
+  }
+
+  .paper-title {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--paper-text);
+    letter-spacing: 0.5px;
+  }
+
+  .paper-subtitle {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--paper-text);
+  }
+
+  .paper-label {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--paper-text);
+  }
+
+  .doodle-border {
+    border: 3px solid var(--paper-border);
+    border-radius: 16px;
+    position: relative;
+  }
+
+  .doodle-border::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: var(--paper-bg);
+  }
+
+  .game-board {
+    background: var(--paper-card);
+    border: 3px solid var(--paper-border);
+    border-radius: 16px;
+    box-shadow: 6px 6px 0 var(--paper-border);
+  }
+
+  .cell-hover:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .cell-hover:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .stat-card {
+    background: var(--paper-card);
+    border: 3px solid var(--paper-border);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--paper-text);
+  }
+
+  .stat-label {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.75rem;
+    color: var(--paper-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .game-container {
+    min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
