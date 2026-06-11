@@ -172,7 +172,6 @@ const Home: React.FC = () => {
               </PaperCard>
             ))}
 
-            {/* ⬇️ ABC LIMA DASAR - Game Baru */}
             <a href="/abc-lima-dasar" className="block">
               <PaperCard hover className="cursor-pointer group h-full">
                 <div className="flex items-start gap-4">
