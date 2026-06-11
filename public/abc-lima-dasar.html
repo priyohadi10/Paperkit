@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f8f8f6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+<title>ABC Lima Dasar - Paper Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f8f6;
+    --card: #ffffff;
+    --ink: #1a1a1a;
+    --ink-sec: #666666;
+    --border: #e5e5e0;
+    --accent: #d4a373;
+    --accent-2: #bc8a5f;
+    --success: #5a8e50;
+    --danger: #c75b5b;
+    --warning: #e6b800;
+    --shadow: rgba(0,0,0,0.06);
+    --font-body: 'Inter', sans-serif;
+    --font-hand: 'Patrick Hand', cursive;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a1a;
+      --card: #242424;
+      --ink: #f0f0f0;
+      --ink-sec: #999999;
+      --border: #333333;
+      --shadow: rgba(0,0,0,0.2);
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 800px;
+    width: 100%;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 20px 16px;
+    position: relative;
+  }
+  .header h1 {
+    font-family: var(--font-hand);
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .header p {
+    color: var(--ink-sec);
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    color: var(--ink);
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .back-btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+  .back-btn:active { transform: scale(0.98); }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 16px var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.2s ease;
+  }
+  .card:hover { transform: translateY(-1px); }
+
+  /* Typography */
+  h2 {
+    font-family: var(--font-hand);
+    font-size: 1.6rem;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+  h3 {
+    font-family: var(--font-hand);
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  /* Player inputs */
+  .player-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .player-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .player-row:focus-within { border-color: var(--accent); }
+  .player-row .num {
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  .player-row input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 4px;
+    outline: none;
+    color: var(--ink);
+  }
+  .player-row input::placeholder { color: var(--ink-sec); opacity: 0.6; }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.2px;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 12px rgba(212,163,115,0.25);
+  }
+  .btn-primary:hover {
+    background: var(--accent-2);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(212,163,115,0.35);
+  }
+  .btn-secondary {
+    background: var(--bg);
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); background: var(--card); }
+  .btn-success {
+    background: var(--success);
+    color: white;
+    box-shadow: 0 4px 12px rgba(90,142,80,0.25);
+  }
+  .btn-success:hover { background: #4a7a42; transform: translateY(-1px); }
+  .btn-danger {
+    background: var(--danger);
+    color: white;
+    box-shadow: 0 4px 12px rgba(199,91,91,0.25);
+  }
+  .btn-danger:hover { background: #b04e4e; transform: translateY(-1px); }
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .btn-group .btn { flex: 1; }
+
+  /* Game Screen */
+  .game-screen { display: none; }
+
+  .round-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .round-badge {
+    background: var(--accent);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .timer-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 1rem;
+    border: 1.5px solid var(--border);
+  }
+  .timer-box.warning {
+    border-color: var(--danger);
+    color: var(--danger);
+    animation: pulse 0.6s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  .letter-display {
+    text-align: center;
+    padding: 28px 20px;
+    background: var(--bg);
+    border-radius: 20px;
+    margin-bottom: 20px;
+    border: 2px dashed var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  .letter-display::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(212,163,115,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .letter-display .label {
+    font-size: 0.8rem;
+    color: var(--ink-sec);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .letter-display .letter {
+    font-family: var(--font-hand);
+    font-size: 5rem;
+    font-weight: 400;
+    color: var(--accent-2);
+    line-height: 1;
+    position: relative;
+  }
+  .letter-display .category {
+    font-family: var(--font-hand);
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin-top: 6px;
+    position: relative;
+  }
+
+  .players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .player-card {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1.5px solid var(--border);
+    transition: all 0.3s ease;
+  }
+  .player-card.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(212,163,115,0.15);
+  }
+  .player-card.answered {
+    border-color: var(--success);
+    background: rgba(90,142,80,0.06);
+  }
+  .player-card.wrong {
+    border-color: var(--danger);
+    background: rgba(199,91,91,0.06);
+  }
+  .player-card .p-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .player-card .p-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .player-card .p-score {
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .player-card input {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    text-align: center;
+    text-transform: lowercase;
+    transition: all 0.2s;
+    outline: none;
+    background: var(--card);
+    color: var(--ink);
+  }
+  .player-card input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(212,163,115,0.15);
+  }
+  .player-card input:disabled {
+    background: var(--border);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .player-card .status {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    min-height: 18px;
+  }
+  .status.correct { color: var(--success); }
+  .status.wrong { color: var(--danger); }
+  .status.waiting { color: var(--ink-sec); }
+
+  /* Scoreboard */
+  .scoreboard-screen { display: none; }
+  .score-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .score-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    transition: all 0.2s ease;
+  }
+  .score-item:hover { transform: translateX(4px); border-color: var(--accent); }
+  .score-item.rank-1 {
+    background: linear-gradient(90deg, rgba(230,184,0,0.08), transparent);
+    border-color: var(--warning);
+  }
+  .score-item .rank {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .rank-1 .rank { background: var(--warning); color: white; }
+  .rank-2 .rank { background: #a0a0a0; color: white; }
+  .rank-3 .rank { background: #cd7f32; color: white; }
+  .score-item .rank { background: var(--border); color: var(--ink-sec); }
+  .score-item .s-name { flex: 1; font-weight: 600; font-size: 0.95rem; }
+  .score-item .s-points {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-2);
+  }
+
+  /* History */
+  .history {
+    margin-top: 16px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .history::-webkit-scrollbar { width: 6px; }
+  .history::-webkit-scrollbar-track { background: transparent; }
+  .history::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--bg);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    border: 1px solid var(--border);
+  }
+  .history-item .h-letter {
+    font-weight: 700;
+    color: var(--accent-2);
+    font-family: var(--font-hand);
+    font-size: 1rem;
+  }
+  .history-item .h-cat { color: var(--ink-sec); font-size: 0.8rem; }
+
+  /* Animations */
+  @keyframes popIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .pop-in { animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .shake { animation: shake 0.3s ease-in-out; }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .slide-up { animation: slideUp 0.4s ease-out; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header { padding: 16px 10px; }
+    .header h1 { font-size: 1.8rem; }
+    .back-btn { position: static; margin-bottom: 12px; width: 100%; justify-content: center; }
+    .letter-display .letter { font-size: 4rem; }
+    .players-grid { grid-template-columns: 1fr; }
+    .btn-group { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <a href="/" class="back-btn">← Kembali</a>
+    <h1>🎲 ABC Lima Dasar</h1>
+    <p>Ketik kata yang benar sebelum waktu habis!</p>
+  </div>
+
+  <!-- Setup -->
+  <div class="card setup-screen" id="setupScreen">
+    <h2>👥 Atur Pemain</h2>
+    <div class="player-inputs" id="playerInputs"></div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="addPlayer()">+ Tambah</button>
+      <button class="btn btn-danger" onclick="removePlayer()">- Kurangi</button>
+    </div>
+    <div class="btn-group" style="margin-top:16px">
+      <button class="btn btn-primary" onclick="startGame()">▶ Mulai Permainan</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div class="card game-screen" id="gameScreen">
+    <div class="round-info">
+      <div class="round-badge" id="roundBadge">Ronde 1</div>
+      <div class="timer-box" id="timerBox">⏱️ <span id="timer">30</span>s</div>
+    </div>
+
+    <div class="letter-display pop-in" id="letterDisplay">
+      <div class="label">Huruf yang keluar</div>
+      <div class="letter" id="currentLetter">A</div>
+      <div class="category" id="currentCategory">Nama Hewan</div>
+    </div>
+
+    <div class="players-grid" id="playersGrid"></div>
+
+    <div class="btn-group" style="margin-top:20px">
+      <button class="btn btn-success" id="submitBtn" onclick="submitRound()">✓ Kunci Jawaban</button>
+      <button class="btn btn-danger" onclick="endGame()">🏁 Akhiri</button>
+    </div>
+
+    <div class="history" id="history"></div>
+  </div>
+
+  <!-- Scoreboard -->
+  <div class="card scoreboard-screen" id="scoreboardScreen">
+    <h2>🏆 Papan Peringkat</h2>
+    <div class="score-list" id="scoreList"></div>
+    <div class="history" id="finalHistory"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="restartGame()">🔄 Main Lagi</button>
+      <button class="btn btn-secondary" onclick="goHome()">🏠 Menu Utama</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===================== DATASET =====================
+const wordDatabase = {
+  hewan: [
+    "anjing","ayam","badak","babi","bangau","bebek","belalang","beruang","biawak","bison",
+    "buaya","bunglon","burung","cacing","capung","cicak","cumi","domba","elang","gajah",
+    "gurita","hamster","harimau","hiu","ikan","jangkrik","jerapah","kadal","kambing","kancil",
+    "kanguru","kecoa","kelinci","kera","kucing","kuda","kudanil","kumbang","kupukupu","kura",
+    "landak","lebah","lele","lintah","lipan","lumba","macan","merak","monyet","musang",
+    "nyamuk","paus","pelikan","penyu","rajawali","rakun","rambutan","rusa","sapi","semut",
+    "serigala","singa","tikus","trenggiling","udang","ular","unta","walet","walrus","zebra"
+  ],
+  kota: [
+    "ambon","balikpapan","banda","bandung","banjarmasin","batam","bengkulu","bogor","bontang","cianjur",
+    "cimahi","cirebon","denpasar","depok","garut","gorontalo","jakarta","jambi","jayapura","kendari",
+    "kupang","lampung","madiun","madura","makassar","malang","manado","mataram","medan","merauke",
+    "padang","palangkaraya","palembang","palu","pangkalpinang","pekanbaru","pontianak","samarinda","semarang","serang",
+    "sidoarjo","solo","sorong","surabaya","tangerang","tanjungpinang","tarakan","tasikmalaya","tegal","ternate",
+    "timika","yogyakarta"
+  ],
+  makanan: [
+    "apel","asin","ayam","babi","bakso","bakwan","batagor","bubur","burger","cakwe",
+    "cireng","daging","dodol","donat","durian","gado","gudeg","gulai","ikan","jagung",
+    "jengkol","jeruk","kacang","kangkung","kebab","kelapa","kemiri","kentang","kerupuk","ketan",
+    "kopi","kue","kurma","lalapan","lumpia","martabak","mie","nasi","nugget","onde",
+    "pangsit","pepes","perkedel","pisang","pizza","rawon","rendang","roti","salad","sambal",
+    "sate","sayur","seblak","semur","sop","soto","susu","tahu","takoyaki","telur",
+    "tempe","terong","tomyam","tuna","udang","wortel"
+  ],
+  benda: [
+    "almari","bantal","baskom","bedak","bola","buku","cangkir","celana","dasi","ember",
+    "garam","garpu","gelas","gitar","helm","jam","jarum","jendela","kacamata","kalkulator",
+    "kamera","karet","kasur","kursi","lampu","laptop","lemari","lipstik","meja","mic",
+    "mobil","motor","paku","panci","papan","pensil","piring","pulpen","radio","raket",
+    "remote","sabun","sandal","sapu","sepeda","sendok","spidol","tali","tas","televisi",
+    "tisu","topi","troley","tumbler","undangan","vas","wajan","wallet","botol"
+  ],
+  bunga: [
+    "anggrek","aster","bougenville","dahlia","edelweis","flamboyan","gardenia","hibiscus","jasmine","kaktus",
+    "kamboja","kenanga","krisan","lavender","lily","magnolia","matahari","melati","mawar","orchid",
+    "pansy","rafflesia","sakura","sedapmalam","sepatu","teratai","tulip","violet"
+  ],
+  profesi: [
+    "akuntan","arsitek","dokter","dosen","guru","insinyur","jurnalis","koki","lawyer","masinis",
+    "nelayan","notaris","pahlawan","pakar","pelayan","pelukis","penari","pengacara","penulis","perawat",
+    "petani","pilot","polisi","presiden","programmer","sastrawan","seniman","singer","tentara","wartawan"
+  ],
+  warna: [
+    "abu","biru","coklat","emas","hijau","hitam","jingga","krem","kuning","lime",
+    "magenta","maroon","merah","nila","oranye","perak","pink","ungu","putih","silver",
+    "tosca","violet","zaitun"
+  ]
+};
+
+const allWords = new Set();
+Object.values(wordDatabase).forEach(arr => arr.forEach(w => allWords.add(w)));
+
+// ===================== STATE =====================
+let players = [], round = 1, maxRounds = 10, timeLeft = 30;
+let timerInterval = null, currentLetter = '', currentCategory = '', currentCategoryKey = '';
+let roundHistory = [];
+
+const categories = [
+  { key: 'hewan', label: 'Nama Hewan' },
+  { key: 'kota', label: 'Nama Kota' },
+  { key: 'makanan', label: 'Nama Makanan' },
+  { key: 'benda', label: 'Nama Benda' },
+  { key: 'bunga', label: 'Nama Bunga' },
+  { key: 'profesi', label: 'Nama Profesi' },
+  { key: 'warna', label: 'Nama Warna' }
+];
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+// ===================== SETUP =====================
+function initSetup() { renderPlayerInputs(2); }
+
+function renderPlayerInputs(count) {
+  const container = document.getElementById('playerInputs');
+  container.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const div = document.createElement('div');
+    div.className = 'player-row';
+    div.innerHTML = `
+      <div class="num">${i+1}</div>
+      <input type="text" id="pname${i}" placeholder="Nama Pemain ${i+1}" value="Pemain ${i+1}">
+    `;
+    container.appendChild(div);
+  }
+}
+
+function addPlayer() {
+  const current = document.querySelectorAll('.player-row').length;
+  if (current < 10) renderPlayerInputs(current + 1);
+}
+function removePlayer() {
+  const current = document.querySelectorAll('.player-row').length;
+  if (current > 2) renderPlayerInputs(current - 1);
+}
+
+function startGame() {
+  const inputs = document.querySelectorAll('.player-row input');
+  players = [];
+  inputs.forEach((inp, idx) => {
+    players.push({ id: idx, name: inp.value.trim() || `Pemain ${idx+1}`, score: 0 });
+  });
+  round = 1; roundHistory = [];
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('scoreboardScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'block';
+  startRound();
+}
+
+// ===================== ROUND =====================
+function startRound() {
+  // Pick letter + category that has valid words
+  let validCats = [];
+  let attempts = 0;
+  while (validCats.length === 0 && attempts < 100) {
+    currentLetter = letters[Math.floor(Math.random() * letters.length)];
+    validCats = categories.filter(cat => wordDatabase[cat.key].some(w => w.toUpperCase().startsWith(currentLetter)));
+    attempts++;
+  }
+  if (validCats.length === 0) { currentLetter = 'A'; validCats = [categories[0]]; }
+
+  const catObj = validCats[Math.floor(Math.random() * validCats.length)];
+  currentCategory = catObj.label;
+  currentCategoryKey = catObj.key;
+
+  document.getElementById('roundBadge').textContent = `Ronde ${round} / ${maxRounds}`;
+  document.getElementById('currentLetter').textContent = currentLetter;
+  document.getElementById('currentCategory').textContent = currentCategory;
+
+  const ld = document.getElementById('letterDisplay');
+  ld.classList.remove('pop-in');
+  void ld.offsetWidth;
+  ld.classList.add('pop-in');
+
+  renderPlayerCards();
+
+  timeLeft = 30;
+  updateTimer();
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) { clearInterval(timerInterval); submitRound(); }
+  }, 1000);
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false;
+  btn.textContent = '✓ Kunci Jawaban';
+}
+
+function updateTimer() {
+  const box = document.getElementById('timerBox');
+  document.getElementById('timer').textContent = timeLeft;
+  box.classList.toggle('warning', timeLeft <= 5);
+}
+
+function renderPlayerCards() {
+  const grid = document.getElementById('playersGrid');
+  grid.innerHTML = '';
+  players.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = 'player-card';
+    div.id = `pcard${idx}`;
+    div.innerHTML = `
+      <div class="p-header">
+        <div class="p-name">${p.name}</div>
+        <div class="p-score" id="pscore${idx}">${p.score} poin</div>
+      </div>
+      <input type="text" id="pans${idx}" placeholder="Ketik jawaban..." 
+        onkeydown="if(event.key==='Enter'){event.preventDefault();submitRound();}"
+        autocomplete="off" autocorrect="off" spellcheck="false">
+      <div class="status waiting" id="pstatus${idx}">⏳ Menunggu...</div>
+    `;
+    grid.appendChild(div);
+  });
+  setTimeout(() => document.getElementById('pans0')?.focus(), 100);
+}
+
+// ===================== VALIDATION =====================
+function normalize(str) {
+  return str.toLowerCase().trim().replace(/[^a-z]/g, '');
+}
+function isValidAnswer(ans, letter, catKey) {
+  const norm = normalize(ans);
+  if (!norm || norm.length < 2) return false;
+  if (!norm.startsWith(letter.toLowerCase())) return false;
+  const catWords = wordDatabase[catKey] || [];
+  if (catWords.includes(norm)) return true;
+  return allWords.has(norm);
+}
+function getValidAnswers(letter, catKey) {
+  return (wordDatabase[catKey] || []).filter(w => w.toUpperCase().startsWith(letter));
+}
+
+// ===================== SUBMIT =====================
+function submitRound() {
+  clearInterval(timerInterval);
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '✓ Sudah Dikunci';
+
+  const results = [];
+  players.forEach((p, idx) => {
+    const input = document.getElementById(`pans${idx}`);
+    const card = document.getElementById(`pcard${idx}`);
+    const status = document.getElementById(`pstatus${idx}`);
+    const answer = input.value;
+    input.disabled = true;
+
+    const valid = isValidAnswer(answer, currentLetter, currentCategoryKey);
+    const norm = normalize(answer);
+
+    if (valid) {
+      card.classList.add('answered');
+      status.textContent = '✓ Benar!';
+      status.className = 'status correct';
+      results.push({ idx, valid: true, answer: norm });
+    } else {
+      card.classList.add('wrong');
+      status.textContent = answer.trim() ? '✗ Salah / Tidak Valid' : '✗ Tidak menjawab';
+      status.className = 'status wrong';
+      results.push({ idx, valid: false, answer: norm });
+    }
+  });
+
+  const correctOnes = results.filter(r => r.valid);
+  const bonus = correctOnes.length === 1 ? 5 : 0;
+  results.forEach(r => {
+    if (r.valid) {
+      players[r.idx].score += 10 + bonus;
+      document.getElementById(`pscore${r.idx}`).textContent = players[r.idx].score + ' poin';
+    }
+  });
+
+  const validAnswers = getValidAnswers(currentLetter, currentCategoryKey);
+
+  roundHistory.push({
+    round, letter: currentLetter, category: currentCategory,
+    answers: results.map(r => ({ name: players[r.idx].name, answer: r.answer, valid: r.valid }))
+  });
+
+  const historyDiv = document.getElementById('history');
+  const validStr = validAnswers.length > 0 ? validAnswers.slice(0, 5).join(', ') : 'tidak ada di database';
+  const hi = document.createElement('div');
+  hi.className = 'history-item';
+  hi.innerHTML = `<span><span class="h-letter">${currentLetter}</span> — ${currentCategory}</span><span class="h-cat">${validStr}</span>`;
+  historyDiv.prepend(hi);
+
+  if (round < maxRounds) {
+    round++;
+    setTimeout(startRound, 3000);
+  } else {
+    setTimeout(showScoreboard, 3000);
+  }
+}
+
+// ===================== SCOREBOARD =====================
+function showScoreboard() {
+  document.getElementById('gameScreen').style.display = 'none';
+  document.getElementById('scoreboardScreen').style.display = 'block';
+
+  const sorted = [...players].sort((a, b) => b.score - a.score);
+  const list = document.getElementById('scoreList');
+  list.innerHTML = '';
+  sorted.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = `score-item rank-${idx+1} slide-up`;
+    div.style.animationDelay = (idx * 0.1) + 's';
+    div.innerHTML = `
+      <div class="rank">${idx+1}</div>
+      <div class="s-name">${p.name}</div>
+      <div class="s-points">${p.score} poin</div>
+    `;
+    list.appendChild(div);
+  });
+
+  const fh = document.getElementById('finalHistory');
+  fh.innerHTML = '<h3>📜 Riwayat Ronde</h3>' + 
+    roundHistory.map(h => `
+      <div class="history-item">
+        <span><span class="h-letter">${h.letter}</span> — ${h.category}</span>
+        <span class="h-cat">Ronde ${h.round}</span>
+      </div>
+    `).join('');
+}
+
+function restartGame() {
+  players.forEach(p => p.score = 0);
+  document.getElementById('history').innerHTML = '';
+  startGame();
+}
+function endGame() { clearInterval(timerInterval); showScoreboard(); }
+function goHome() { window.location.href = '/'; }
+
+// ===================== INIT =====================
+initSetup();
+</script>
+</body>
+</html>
