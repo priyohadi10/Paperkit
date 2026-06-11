@@ -51,8 +51,6 @@ function App() {
             <Route path="/snake" element={<GamePage />} />
             <Route path="/number-duel" element={<GamePage />} />
             <Route path="/sambung-kata" element={<GamePage />} />
-            
-            {/* ⬇️ ROUTE BARU: Redirect ke file HTML standalone */}
             <Route path="/abc-lima-dasar" element={<Navigate to="/abc-lima-dasar.html" replace />} />
             
             <Route path="/statistics" element={<Statistics />} />
