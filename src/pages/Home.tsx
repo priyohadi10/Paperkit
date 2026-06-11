@@ -12,6 +12,7 @@ import {
   Dices,
   BookText,
   Grid2x2,
+  Dice,
 } from 'lucide-react';
 import { PaperCard } from '@/components/paper/PaperCard';
 import { DoodleDecoration } from '@/components/paper/DoodleDecoration';
@@ -170,6 +171,28 @@ const Home: React.FC = () => {
                 </div>
               </PaperCard>
             ))}
+
+            {/* ⬇️ ABC LIMA DASAR - Game Baru */}
+            <a href="/abc-lima-dasar" className="block">
+              <PaperCard hover className="cursor-pointer group h-full">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-orange-100 dark:bg-orange-900/30 border-[3px] border-[var(--paper-border)] flex items-center justify-center shrink-0 shadow-paper-sm group-hover:shadow-none transition-shadow">
+                    <Dice className="w-8 h-8" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-display text-lg font-bold text-[var(--paper-text)] mb-0.5">
+                      ABC Lima Dasar
+                    </h4>
+                    <p className="text-xs text-[var(--paper-muted)] mb-2">
+                      2-10 Pemain
+                    </p>
+                    <p className="text-sm text-[var(--paper-text)] leading-snug">
+                      Ketik kata sesuai huruf & kategori sebelum waktu habis!
+                    </p>
+                  </div>
+                </div>
+              </PaperCard>
+            </a>
           </div>
         </div>
       </section>
