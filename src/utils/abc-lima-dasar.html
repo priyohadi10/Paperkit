@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABC Lima Dasar - Paper Arcade</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+  :root {
+    --paper: #fdfbf7;
+    --paper-dark: #f5f0e8;
+    --ink: #2c2c2c;
+    --ink-light: #5a5a5a;
+    --accent: #d4a373;
+    --accent-dark: #bc8a5f;
+    --success: #6a9e5f;
+    --danger: #c75b5b;
+    --warning: #e6b800;
+    --shadow: rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(212,163,115,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(212,163,115,0.08) 0%, transparent 50%);
+  }
+
+  .container {
+    max-width: 900px;
+    width: 100%;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--shadow);
+    border: 2px solid var(--paper-dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark), var(--accent));
+  }
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: 5px;
+  }
+  .header p {
+    color: var(--ink-light);
+    font-size: 0.95rem;
+  }
+  .back-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: var(--paper-dark);
+    border: 2px solid var(--accent);
+    color: var(--ink);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .back-btn:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* Cards */
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px var(--shadow);
+    border: 2px solid var(--paper-dark);
+    transition: transform 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); }
+
+  /* Setup Screen */
+  .setup-screen h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+  }
+  .player-inputs {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .player-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background: var(--paper);
+    border-radius: 12px;
+    border: 2px solid var(--paper-dark);
+  }
+  .player-row .num {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .player-row input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 5px;
+    outline: none;
+    color: var(--ink);
+  }
+  .player-row input::placeholder { color: #aaa; }
+
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 15px rgba(212,163,115,0.3);
+  }
+  .btn-primary:hover {
+    background: var(--accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212,163,115,0.4);
+  }
+  .btn-secondary {
+    background: var(--paper-dark);
+    color: var(--ink);
+    border: 2px solid var(--accent);
+  }
+  .btn-secondary:hover {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-success {
+    background: var(--success);
+    color: white;
+  }
+  .btn-success:hover { background: #5a8e50; }
+  .btn-danger {
+    background: var(--danger);
+    color: white;
+  }
+  .btn-danger:hover { background: #b04e4e; }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .btn-group .btn { flex: 1; }
+
+  /* Game Screen */
+  .game-screen { display: none; }
+
+  .round-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .round-badge {
+    background: var(--accent);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .timer-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--paper-dark);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .timer-box.warning { color: var(--danger); animation: pulse 0.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  .letter-display {
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(135deg, var(--paper-dark), white);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 3px dashed var(--accent);
+  }
+  .letter-display .label {
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+  }
+  .letter-display .letter {
+    font-size: 5rem;
+    font-weight: 900;
+    color: var(--accent-dark);
+    line-height: 1;
+  }
+  .letter-display .category {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-top: 5px;
+  }
+
+  .players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+  }
+  .player-card {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 18px;
+    border: 2px solid var(--paper-dark);
+    transition: all 0.3s;
+  }
+  .player-card.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(212,163,115,0.2);
+  }
+  .player-card.answered {
+    border-color: var(--success);
+    background: #f0f7ee;
+  }
+  .player-card.wrong {
+    border-color: var(--danger);
+    background: #fdf0f0;
+  }
+  .player-card .p-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .player-card .p-name {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .player-card .p-score {
+    background: var(--accent);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  .player-card input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--paper-dark);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    text-align: center;
+    text-transform: lowercase;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .player-card input:focus {
+    border-color: var(--accent);
+  }
+  .player-card input:disabled {
+    background: #eee;
+    cursor: not-allowed;
+  }
+  .player-card .status {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+    min-height: 20px;
+  }
+  .status.correct { color: var(--success); }
+  .status.wrong { color: var(--danger); }
+  .status.waiting { color: var(--ink-light); }
+
+  /* Scoreboard */
+  .scoreboard-screen { display: none; }
+  .scoreboard-screen h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .score-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .score-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--paper);
+    border-radius: 12px;
+    border: 2px solid var(--paper-dark);
+    transition: all 0.2s;
+  }
+  .score-item:hover { transform: translateX(5px); }
+  .score-item.rank-1 {
+    background: linear-gradient(90deg, #fff9e6, white);
+    border-color: var(--warning);
+  }
+  .score-item .rank {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .rank-1 .rank { background: var(--warning); color: white; }
+  .rank-2 .rank { background: #c0c0c0; color: white; }
+  .rank-3 .rank { background: #cd7f32; color: white; }
+  .score-item .rank { background: var(--paper-dark); color: var(--ink-light); }
+  .score-item .s-name { flex: 1; font-weight: 700; }
+  .score-item .s-points {
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--accent-dark);
+  }
+
+  /* Round history */
+  .history {
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--paper);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+  }
+  .history-item .h-letter {
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+  .history-item .h-cat { color: var(--ink-light); }
+
+  /* Animations */
+  @keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .pop-in { animation: popIn 0.4s ease-out; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  .shake { animation: shake 0.3s ease-in-out; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.5rem; }
+    .letter-display .letter { font-size: 3.5rem; }
+    .players-grid { grid-template-columns: 1fr; }
+    .back-btn { position: static; margin-bottom: 10px; display: inline-flex; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="index.html" class="back-btn">← Kembali</a>
+    <h1>🎲 ABC Lima Dasar</h1>
+    <p>Ketik kata yang benar sebelum waktu habis!</p>
+  </div>
+
+  <!-- Setup Screen -->
+  <div class="card setup-screen" id="setupScreen">
+    <h2>👥 Atur Pemain (2-10 orang)</h2>
+    <div class="player-inputs" id="playerInputs">
+      <!-- Generated by JS -->
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="addPlayer()">+ Tambah Pemain</button>
+      <button class="btn btn-danger" onclick="removePlayer()">- Kurangi</button>
+    </div>
+    <br>
+    <button class="btn btn-primary" onclick="startGame()">▶ Mulai Permainan</button>
+  </div>
+
+  <!-- Game Screen -->
+  <div class="card game-screen" id="gameScreen">
+    <div class="round-info">
+      <div class="round-badge" id="roundBadge">Ronde 1</div>
+      <div class="timer-box" id="timerBox">⏱️ <span id="timer">30</span>s</div>
+    </div>
+
+    <div class="letter-display pop-in" id="letterDisplay">
+      <div class="label">Huruf yang keluar</div>
+      <div class="letter" id="currentLetter">A</div>
+      <div class="category" id="currentCategory">Nama Hewan</div>
+    </div>
+
+    <div class="players-grid" id="playersGrid">
+      <!-- Generated by JS -->
+    </div>
+
+    <div class="btn-group" style="margin-top:20px">
+      <button class="btn btn-success" id="submitBtn" onclick="submitRound()">✓ Kunci Jawaban</button>
+      <button class="btn btn-danger" onclick="endGame()">🏁 Akhiri Game</button>
+    </div>
+
+    <div class="history" id="history"></div>
+  </div>
+
+  <!-- Scoreboard Screen -->
+  <div class="card scoreboard-screen" id="scoreboardScreen">
+    <h2>🏆 Papan Peringkat</h2>
+    <div class="score-list" id="scoreList"></div>
+    <div class="history" id="finalHistory"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="restartGame()">🔄 Main Lagi</button>
+      <button class="btn btn-secondary" onclick="goHome()">🏠 Menu Utama</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===================== DATASET KATA =====================
+// Kategori kata berdasarkan KBBI & umum
+const wordDatabase = {
+  hewan: [
+    "anjing","ayam","badak","babi","bangau","bebek","belalang","beruang","biawak","bison",
+    "buaya","bunglon","burung","cacing","capung","cicak","cumi","domba","elang","gajah",
+    "gurita","hamster","harimau","hiu","ikan","jangkrik","jerapah","kadal","kambing","kancil",
+    "kanguru","kecoa","kelinci","kera","kucing","kuda","kudanil","kumbang","kupukupu","kura",
+    "landak","lebah","lele","lintah","lipan","lumba","macan","merak","monyet","musang",
+    "nyamuk","paus","pelikan","penyu","rajawali","rakun","rambutan","rusa","sapi","semut",
+    "serigala","singa","tikus","trenggiling","udang","ular","unta","walet","walrus","zebra"
+  ],
+  kota: [
+    "ambon","balikpapan","banda","bandung","banjarmasin","batam","bengkulu","bogor","bontang","cianjur",
+    "cimahi","cirebon","denpasar","depok","garut","gorontalo","jakarta","jambi","jayapura","kendari",
+    "kupang","lampung","madiun","madura","makassar","malang","manado","mataram","medan","merauke",
+    "padang","palangkaraya","palembang","palu","pangkalpinang","pekanbaru","pontianak","samarinda","semarang","serang",
+    "sidoarjo","solo","sorong","surabaya","tangerang","tanjungpinang","tarakan","tasikmalaya","tegal","ternate",
+    "timika","yogyakarta"
+  ],
+  makanan: [
+    "apel","asin","ayam","babi","bakso","bakwan","batagor","bubur","burger","cakwe",
+    "cireng","daging","dodol","donat","durian","gado","gudeg","gulai","ikan","jagung",
+    "jengkol","jeruk","kacang","kangkung","kebab","kelapa","kemiri","kentang","kerupuk","ketan",
+    "kopi","kue","kurma","lalapan","lumpia","martabak","mie","nasi","nugget","onde",
+    "pangsit","pepes","perkedel","pisang","pizza","rawon","rendang","roti","salad","sambal",
+    "sate","sayur","seblak","semur","sop","soto","susu","tahu","takoyaki","telur",
+    "tempe","terong","tomyam","tuna","udang","wortel"
+  ],
+  benda: [
+    "almari","bantal","baskom","bedak","bola","buku","cangkir","celana","dasi","ember",
+    "garam","garpu","gelas","gitar","harpus","helm","jam","jarum","jendela","kacamata",
+    "kalkulator","kamera","karet","kasur","kursi","lampu","laptop","lemari","lipstik","meja",
+    "mic","mobil","motor","paku","panci","papan","pensil","piring","pulpen","radio",
+    "raket","remote","sabun","sandal","sapu","sepeda","sendok","spidol","tali","tas",
+    "televisi","tisu","topi","troley","tumbler","undangan","vas","wajan","wallet","botol"
+  ],
+  bunga: [
+    "anggrek","aster","bougenville","dahlia","edelweis","flamboyan","gardenia","hibiscus","jasmine","kaktus",
+    "kamboja","kenanga","krisan","lavender","lily","magnolia","matahari","melati","mawar","orchid",
+    "pansy","rafflesia","sakura","sedapmalam","sepatu","teratai","tulip","violet"
+  ],
+  profesi: [
+    "akuntan","arsitek","dokter","dosen","guru","insinyur","jurnalis","koki","lawyer","masinis",
+    "nelayan","notaris","pahlawan","pakar","pelayan","pelukis","penari","pengacara","penulis","perawat",
+    "petani","pilot","polisi","presiden","programmer","sastrawan","seniman","singer","tentara","wartawan"
+  ],
+  warna: [
+    "abu","biru","coklat","emas","hijau","hitam","jingga","krem","kuning","lime",
+    "magenta","maroon","merah","nila","oranye","perak","pink","ungu","putih","silver",
+    "tosca","turkish","violet","zaitun"
+  ]
+};
+
+// Flatten all words for quick lookup
+const allWords = new Set();
+Object.values(wordDatabase).forEach(arr => arr.forEach(w => allWords.add(w)));
+
+// ===================== GAME STATE =====================
+let players = [];
+let round = 1;
+let maxRounds = 10;
+let timeLeft = 30;
+let timerInterval = null;
+let currentLetter = '';
+let currentCategory = '';
+let currentCategoryKey = '';
+let roundHistory = [];
+let answeredPlayers = new Set();
+
+const categories = [
+  { key: 'hewan', label: 'Nama Hewan' },
+  { key: 'kota', label: 'Nama Kota' },
+  { key: 'makanan', label: 'Nama Makanan' },
+  { key: 'benda', label: 'Nama Benda' },
+  { key: 'bunga', label: 'Nama Bunga' },
+  { key: 'profesi', label: 'Nama Profesi' },
+  { key: 'warna', label: 'Nama Warna' }
+];
+
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+// ===================== SETUP =====================
+function initSetup() {
+  renderPlayerInputs(2);
+}
+
+function renderPlayerInputs(count) {
+  const container = document.getElementById('playerInputs');
+  container.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const div = document.createElement('div');
+    div.className = 'player-row';
+    div.innerHTML = `
+      <div class="num">${i+1}</div>
+      <input type="text" id="pname${i}" placeholder="Nama Pemain ${i+1}" value="Pemain ${i+1}">
+    `;
+    container.appendChild(div);
+  }
+}
+
+function addPlayer() {
+  const current = document.querySelectorAll('.player-row').length;
+  if (current < 10) renderPlayerInputs(current + 1);
+}
+function removePlayer() {
+  const current = document.querySelectorAll('.player-row').length;
+  if (current > 2) renderPlayerInputs(current - 1);
+}
+
+function startGame() {
+  const inputs = document.querySelectorAll('.player-row input');
+  players = [];
+  inputs.forEach((inp, idx) => {
+    const name = inp.value.trim() || `Pemain ${idx+1}`;
+    players.push({ id: idx, name, score: 0 });
+  });
+
+  round = 1;
+  roundHistory = [];
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('scoreboardScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'block';
+  startRound();
+}
+
+// ===================== ROUND LOGIC =====================
+function startRound() {
+  answeredPlayers.clear();
+
+  // Pick random letter
+  currentLetter = letters[Math.floor(Math.random() * letters.length)];
+
+  // Pick random category that has words starting with this letter
+  let validCategories = categories.filter(cat => 
+    wordDatabase[cat.key].some(w => w.toUpperCase().startsWith(currentLetter))
+  );
+
+  // Fallback: if no valid category for this letter, pick any category and letter combo that works
+  if (validCategories.length === 0) {
+    // Try to find ANY letter-category combo that works
+    let attempts = 0;
+    while (validCategories.length === 0 && attempts < 100) {
+      currentLetter = letters[Math.floor(Math.random() * letters.length)];
+      validCategories = categories.filter(cat => 
+        wordDatabase[cat.key].some(w => w.toUpperCase().startsWith(currentLetter))
+      );
+      attempts++;
+    }
+    // Ultimate fallback
+    if (validCategories.length === 0) {
+      currentLetter = 'A';
+      validCategories = categories.filter(cat => cat.key === 'hewan');
+    }
+  }
+
+  const catObj = validCategories[Math.floor(Math.random() * validCategories.length)];
+  currentCategory = catObj.label;
+  currentCategoryKey = catObj.key;
+
+  // Update UI
+  document.getElementById('roundBadge').textContent = `Ronde ${round} / ${maxRounds}`;
+  document.getElementById('currentLetter').textContent = currentLetter;
+  document.getElementById('currentCategory').textContent = currentCategory;
+  document.getElementById('letterDisplay').classList.remove('pop-in');
+  void document.getElementById('letterDisplay').offsetWidth; // trigger reflow
+  document.getElementById('letterDisplay').classList.add('pop-in');
+
+  // Render player inputs
+  renderPlayerCards();
+
+  // Start timer
+  timeLeft = 30;
+  updateTimerDisplay();
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      submitRound();
+    }
+  }, 1000);
+
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = '✓ Kunci Jawaban';
+}
+
+function updateTimerDisplay() {
+  const box = document.getElementById('timerBox');
+  const span = document.getElementById('timer');
+  span.textContent = timeLeft;
+  if (timeLeft <= 5) box.classList.add('warning');
+  else box.classList.remove('warning');
+}
+
+function renderPlayerCards() {
+  const grid = document.getElementById('playersGrid');
+  grid.innerHTML = '';
+  players.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = 'player-card';
+    div.id = `pcard${idx}`;
+    div.innerHTML = `
+      <div class="p-header">
+        <div class="p-name">${p.name}</div>
+        <div class="p-score" id="pscore${idx}">${p.score} poin</div>
+      </div>
+      <input type="text" id="pans${idx}" placeholder="Ketik jawaban..." 
+        onkeydown="if(event.key==='Enter'){event.preventDefault();submitRound();}"
+        autocomplete="off" autocorrect="off" spellcheck="false">
+      <div class="status waiting" id="pstatus${idx}">⏳ Menunggu...</div>
+    `;
+    grid.appendChild(div);
+  });
+
+  // Focus first input
+  setTimeout(() => {
+    const first = document.getElementById('pans0');
+    if (first) first.focus();
+  }, 100);
+}
+
+// ===================== VALIDATION =====================
+function normalize(str) {
+  return str.toLowerCase().trim().replace(/[^a-z]/g, '');
+}
+
+function isValidAnswer(answer, letter, categoryKey) {
+  const norm = normalize(answer);
+  if (!norm) return false;
+  if (!norm.startsWith(letter.toLowerCase())) return false;
+
+  // Check in specific category
+  const catWords = wordDatabase[categoryKey] || [];
+  if (catWords.includes(norm)) return true;
+
+  // Fallback: check in all words (general KBBI)
+  if (allWords.has(norm)) return true;
+
+  // Extra: check if answer is "reasonable" (at least 2 chars, not gibberish)
+  // But for strict mode, require it to be in database
+  return false;
+}
+
+function getValidAnswers(letter, categoryKey) {
+  const list = wordDatabase[categoryKey] || [];
+  return list.filter(w => w.toUpperCase().startsWith(letter));
+}
+
+// ===================== SUBMIT =====================
+function submitRound() {
+  clearInterval(timerInterval);
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').textContent = '✓ Sudah Dikunci';
+
+  const results = [];
+  let fastestTime = Infinity;
+  let fastestPlayer = -1;
+
+  players.forEach((p, idx) => {
+    const input = document.getElementById(`pans${idx}`);
+    const card = document.getElementById(`pcard${idx}`);
+    const status = document.getElementById(`pstatus${idx}`);
+    const answer = input.value;
+    input.disabled = true;
+
+    const valid = isValidAnswer(answer, currentLetter, currentCategoryKey);
+    const norm = normalize(answer);
+
+    if (valid) {
+      card.classList.add('answered');
+      status.textContent = '✓ Benar!';
+      status.className = 'status correct';
+      // Calculate time taken (approximate from when they typed - simplified: just check if answered before timeup)
+      // For this version: all correct answers get base points, fastest gets bonus
+      results.push({ idx, valid: true, answer: norm });
+    } else {
+      card.classList.add('wrong');
+      status.textContent = answer.trim() ? '✗ Salah / Tidak Valid' : '✗ Tidak menjawab';
+      status.className = 'status wrong';
+      results.push({ idx, valid: false, answer: norm });
+    }
+  });
+
+  // Scoring: correct = 10 pts, if only one correct = +5 bonus
+  const correctOnes = results.filter(r => r.valid);
+  const bonus = correctOnes.length === 1 ? 5 : 0;
+
+  results.forEach(r => {
+    if (r.valid) {
+      players[r.idx].score += 10 + bonus;
+      document.getElementById(`pscore${r.idx}`).textContent = players[r.idx].score + ' poin';
+    }
+  });
+
+  // Show valid answers
+  const validAnswers = getValidAnswers(currentLetter, currentCategoryKey);
+
+  // Add to history
+  roundHistory.push({
+    round,
+    letter: currentLetter,
+    category: currentCategory,
+    answers: results.map(r => ({ name: players[r.idx].name, answer: r.answer, valid: r.valid }))
+  });
+
+  // Show history snippet
+  const historyDiv = document.getElementById('history');
+  const validStr = validAnswers.length > 0 ? validAnswers.slice(0,5).join(', ') : '(tidak ada di database)';
+  historyDiv.innerHTML = `
+    <div class="history-item">
+      <span><span class="h-letter">${currentLetter}</span> — ${currentCategory}</span>
+      <span class="h-cat">Jawaban valid: ${validStr}</span>
+    </div>
+  ` + historyDiv.innerHTML;
+
+  // Next round or end
+  if (round < maxRounds) {
+    round++;
+    setTimeout(startRound, 3000);
+  } else {
+    setTimeout(showScoreboard, 3000);
+  }
+}
+
+// ===================== SCOREBOARD =====================
+function showScoreboard() {
+  document.getElementById('gameScreen').style.display = 'none';
+  document.getElementById('scoreboardScreen').style.display = 'block';
+
+  const sorted = [...players].sort((a,b) => b.score - a.score);
+  const list = document.getElementById('scoreList');
+  list.innerHTML = '';
+
+  sorted.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = `score-item rank-${idx+1}`;
+    div.innerHTML = `
+      <div class="rank">${idx+1}</div>
+      <div class="s-name">${p.name}</div>
+      <div class="s-points">${p.score} poin</div>
+    `;
+    list.appendChild(div);
+  });
+
+  // Final history
+  const fh = document.getElementById('finalHistory');
+  fh.innerHTML = '<h3 style="margin:15px 0 10px;font-size:1rem">📜 Riwayat Ronde:</h3>' + 
+    roundHistory.map(h => `
+      <div class="history-item">
+        <span><span class="h-letter">${h.letter}</span> — ${h.category}</span>
+        <span class="h-cat">Ronde ${h.round}</span>
+      </div>
+    `).join('');
+}
+
+function restartGame() {
+  players.forEach(p => p.score = 0);
+  startGame();
+}
+
+function endGame() {
+  clearInterval(timerInterval);
+  showScoreboard();
+}
+
+function goHome() {
+  window.location.href = 'index.html';
+}
+
+// ===================== INIT =====================
+initSetup();
+</script>
+</body>
+</html>
